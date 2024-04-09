@@ -9,7 +9,7 @@ import joblib
 
 st.title('Flight Price Predictions')
 
-df = pd.read_csv("main\Clean_Dataset.csv")
+df = pd.read_csv("Clean_Dataset.csv")
 df.drop("Unnamed: 0", axis = 1, inplace = True)
 
 st.subheader("Data")
@@ -88,7 +88,7 @@ buf = BytesIO()
 fig1.savefig(buf, format="png")
 st.image(buf)
 
-df_main = pd.read_csv(r"main\final_ds.csv", index_col=False)
+df_main = pd.read_csv(r"final_ds.csv", index_col=False)
 df_main.drop('Unnamed: 0', axis = 1, inplace = True)
 
 st.markdown("___")
@@ -129,8 +129,8 @@ t8 = st.text_input('Duration')
 t9 = st.text_input('Days Left')
 t10 = st.text_input('Flight Number')
 
-pipeline = joblib.load(r'main\model_main.pkl') 
-le = joblib.load(r"main\label_encoder.pkl")
+pipeline = joblib.load(r'model_main.pkl') 
+le = joblib.load(r"label_encoder.pkl")
 
 if st.button('Predict'):
     yp = pd.DataFrame({"airline" : [t1], "source_city":[t2], "departure_time":[t3], "stops":[t4], "arrival_time":[t5], "destination_city":[t6], "class":[t7], "duration":[t8], "days_left":[t9], "flight_number":[t10]})
@@ -141,7 +141,7 @@ if st.button('Predict'):
     categorical_cols = ['airline','source_city','departure_time', 'arrival_time', 'destination_city','class']
 
     # yp[categorical_cols] = yp[categorical_cols].apply(le.fit_transform)
-    label_encoders = np.load("main\label_encoders.npy", allow_pickle=True)
+    label_encoders = np.load("label_encoders.npy", allow_pickle=True)
     for column, label_encoder in zip(categorical_cols, label_encoders):
         yp[column] = label_encoder.transform(yp[column])
 
